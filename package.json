@@ -1,0 +1,39 @@
+{
+  "name": "nodejs-pdf-report",
+  "version": "1.0.0",
+  "description": "nodejs server export pdf from base html template",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "test": "ts-node --transpile-only __test__/index.ts",
+    "clean": "rimraf dist/*",
+    "build": "npm run clean && tsc && gulp bundle"
+  },
+  "keywords": [
+    "node",
+    "nodejs",
+    "pdf",
+    "ejs",
+    "html",
+    "server",
+    "report"
+  ],
+  "author": "Luong Phung<luonguit@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.3",
+    "puppeteer": "^5.2.1",
+    "uuid": "8.2.0"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.0.4",
+    "@types/node": "^13.9.0",
+    "@types/puppeteer": "^3.0.1",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.2.0",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.6.2",
+    "tslint": "^6.0.0",
+    "typescript": "^3.8.3"
+  }
+}

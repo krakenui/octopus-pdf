@@ -1,0 +1,24 @@
+<div class="test">
+  <h1>
+    <button type="submit" onclick="comp()">
+      Demo html to pdf backend support!
+    </button>
+  </h1>
+
+  <h2>Contributes:</h2>
+  <ul>
+    <% users.forEach(function(user){ %>
+    <li><%- user.name %></li>
+    <% }); %>
+  </ul>
+
+  <div class="charts">
+    <canvas
+      id="canvas"
+      style="display: block; height: 270px; width: 540px;"
+      width="1080"
+      height="540"
+      class="chartjs-render-monitor"
+    ></canvas>
+  </div>
+</div>
