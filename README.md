@@ -11,10 +11,10 @@ Nodejs export pdf report from base html templates!
 
 ## Install
 
-[![krc-utils](https://nodei.co/npm/nodejs-pdf-report.png)](https://npmjs.org/package/nodejs-pdf-report)
+[![nodejs-pdf-report](https://nodei.co/npm/nodejs-pdf-report.png)](https://npmjs.org/package/nodejs-pdf-report)
 
 ```
-npm install --save krc-utils
+npm install --save nodejs-pdf-report
 ```
 
 ## Supports
