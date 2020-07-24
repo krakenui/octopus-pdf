@@ -104,7 +104,7 @@ const reportOptions: ReportOptions = {
 | -------------- | -------------------------- | ------- | ---------------------- |
 | title          | string                     | null    | Pdf report title       |
 | useChartJs     | boolean                    | false   | Use chartjs as default |
-| pdfOptions     | [PdfOptions](/#PdfOptions) | null    | any                    |
+| pdfOptions     | [PdfOptions](#PdfOptions) | null    | any                    |
 | template       | string                     | null    | Template path          |
 | footerTemplate | string                     | null    | Footer template path   |
 | headerTemplate | string                     | null    | Header template path   |
