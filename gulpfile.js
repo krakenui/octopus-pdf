@@ -11,5 +11,7 @@ gulp.task("bundle", (done) => {
     .src(["__test__/templates/*"])
     .pipe(gulp.dest(path.resolve(destDir, "__test__/templates")));
 
+  gulp.src(["dist/src/**/*"]).pipe(gulp.dest("dist/lib"));
+
   done();
 });

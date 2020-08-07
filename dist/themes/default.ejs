@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%- title %></title>
+    <% styles.forEach(function(s){ %> <%- s %> <% }); %>
+  </head>
+  <body>
+    <%- content %> 
+
+    <% scripts.forEach(function(s){ %> <%- s %> <% }); %>
+  </body>
+</html>
