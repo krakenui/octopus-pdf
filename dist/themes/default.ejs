@@ -6,8 +6,10 @@
     <% styles.forEach(function(s){ %> <%- s %> <% }); %>
   </head>
   <body>
-    <%- content %> 
-
+    <% defaultScripts.forEach(function(s){ %> <%- s %> <% }); %>
+    
+    <%- content %>
+    
     <% scripts.forEach(function(s){ %> <%- s %> <% }); %>
   </body>
 </html>

@@ -80,57 +80,62 @@ var HtmlReport = /** @class */ (function () {
     }
     HtmlReport.prototype.createPdf = function (options) {
         return __awaiter(this, void 0, void 0, function () {
-            var pageContent, styles, scripts, pageStyles, pageScripts, reportData, reportTemplatePath, reportTemplate, reportHtml, headerTemplate, footerTemplate, pdfOptions, html2Pdf;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this._$loadReportTemplate(options)];
-                    case 1:
-                        pageContent = _a.sent();
-                        styles = options.styles;
-                        scripts = options.scripts;
+            var data, template, rawTemplate, styles, rawStyles, scripts, rawScripts, headerTemplate, rawHeaderTemplate, footerTemplate, rawFooterTemplate, defaultScripts, pageDefaultScripts, pageContent, pageStyles, _a, pageScripts, _b, reportData, reportTemplatePath, reportTemplate, reportHtml, pdfOptions, html2Pdf;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        data = options.data, template = options.template, rawTemplate = options.rawTemplate, styles = options.styles, rawStyles = options.rawStyles, scripts = options.scripts, rawScripts = options.rawScripts, headerTemplate = options.headerTemplate, rawHeaderTemplate = options.rawHeaderTemplate, footerTemplate = options.footerTemplate, rawFooterTemplate = options.rawFooterTemplate;
+                        defaultScripts = [];
                         if (options.useChartJs) {
-                            styles = __spreadArrays([path_1.default.resolve("./themes/chartjs/chart.css")], styles);
-                            scripts = __spreadArrays([path_1.default.resolve("./themes/chartjs/chart.js")], scripts);
+                            styles = __spreadArrays([
+                                path_1.default.resolve(__dirname, "../themes/chartjs/chart.css")
+                            ], styles);
+                            defaultScripts = [path_1.default.resolve(__dirname, "../themes/chartjs/chart.js")];
                         }
-                        return [4 /*yield*/, this._$loadReportStyles({ styles: styles })];
+                        return [4 /*yield*/, this._$loadReportScripts({
+                                scripts: defaultScripts,
+                            })];
+                    case 1:
+                        pageDefaultScripts = _c.sent();
+                        return [4 /*yield*/, this._$loadReportTemplate(data, template, rawTemplate)];
                     case 2:
-                        pageStyles = _a.sent();
-                        return [4 /*yield*/, this._$loadReportScripts({ scripts: scripts })];
+                        pageContent = _c.sent();
+                        _a = rawStyles;
+                        if (_a) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this._$loadReportStyles({ styles: styles })];
                     case 3:
-                        pageScripts = _a.sent();
+                        _a = (_c.sent());
+                        _c.label = 4;
+                    case 4:
+                        pageStyles = _a;
+                        _b = rawScripts;
+                        if (_b) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this._$loadReportScripts({ scripts: scripts })];
+                    case 5:
+                        _b = (_c.sent());
+                        _c.label = 6;
+                    case 6:
+                        pageScripts = _b;
                         reportData = {
                             title: options.title,
                             styles: pageStyles,
                             scripts: pageScripts,
+                            defaultScripts: pageDefaultScripts,
                             content: pageContent,
                         };
-                        reportTemplatePath = path_1.default.resolve("./themes/default.ejs");
+                        reportTemplatePath = path_1.default.resolve(__dirname, "../themes/default.ejs");
                         reportTemplate = fs_1.default
                             .readFileSync(reportTemplatePath)
                             .toString("utf-8");
                         return [4 /*yield*/, this._parser.parse(reportTemplate, reportData)];
-                    case 4:
-                        reportHtml = _a.sent();
-                        headerTemplate = null;
-                        footerTemplate = null;
-                        if (!(options.headerTemplate != null)) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this._$loadReportTemplate({
-                                data: options.data,
-                                template: options.headerTemplate,
-                            })];
-                    case 5:
-                        headerTemplate = _a.sent();
-                        _a.label = 6;
-                    case 6:
-                        if (!(options.footerTemplate != null)) return [3 /*break*/, 8];
-                        return [4 /*yield*/, this._$loadReportTemplate({
-                                data: options.data,
-                                template: options.footerTemplate,
-                            })];
                     case 7:
-                        footerTemplate = _a.sent();
-                        _a.label = 8;
+                        reportHtml = _c.sent();
+                        return [4 /*yield*/, this._$loadReportTemplate(data, headerTemplate, rawHeaderTemplate)];
                     case 8:
+                        headerTemplate = _c.sent();
+                        return [4 /*yield*/, this._$loadReportTemplate(data, footerTemplate, rawFooterTemplate)];
+                    case 9:
+                        footerTemplate = _c.sent();
                         pdfOptions = options.pdfOptions || {};
                         pdfOptions.headerTemplate = headerTemplate || "";
                         pdfOptions.footerTemplate = footerTemplate || "";
@@ -142,22 +147,24 @@ var HtmlReport = /** @class */ (function () {
             });
         });
     };
-    HtmlReport.prototype._$loadReportTemplate = function (_a) {
-        var data = _a.data, absoluteTemplateUrl = _a.template;
+    HtmlReport.prototype._$loadReportTemplate = function (data, absoluteTemplateUrl, rawTemplate) {
+        if (rawTemplate === void 0) { rawTemplate = null; }
         return __awaiter(this, void 0, void 0, function () {
-            var templateUrl, template, templateStr, contentData;
-            return __generator(this, function (_b) {
-                templateUrl = path_1.default.resolve(absoluteTemplateUrl);
-                if (!fs_1.default.existsSync(templateUrl)) {
-                    throw new Error("Template url is invalid");
+            var templateUrl, template, contentData;
+            return __generator(this, function (_a) {
+                if (rawTemplate == null) {
+                    templateUrl = path_1.default.resolve(absoluteTemplateUrl);
+                    if (!fs_1.default.existsSync(templateUrl)) {
+                        throw new Error("Template url is invalid");
+                    }
+                    template = fs_1.default.readFileSync(templateUrl);
+                    if (template == null) {
+                        throw new Error("Template is empty");
+                    }
+                    rawTemplate = template.toString("utf-8");
                 }
-                template = fs_1.default.readFileSync(templateUrl);
-                if (template == null) {
-                    throw new Error("Template is empty");
-                }
-                templateStr = template.toString("utf-8");
-                contentData = __assign(__assign({}, data), { scripts: [], styles: [] });
-                return [2 /*return*/, this._parser.parse(templateStr, contentData)];
+                contentData = __assign(__assign({}, data), { scripts: [], defaultScripts: [], styles: [] });
+                return [2 /*return*/, this._parser.parse(rawTemplate, contentData)];
             });
         });
     };

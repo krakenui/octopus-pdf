@@ -10,7 +10,11 @@ export interface ReportOptions {
     /**
      * template file path
      */
-    template: string;
+    template?: string;
+    /**
+     * template raw text
+     */
+    rawTemplate?: string;
     /**
      * template file path
      */
@@ -18,24 +22,37 @@ export interface ReportOptions {
     /**
      * template file path
      */
+    rawFooterTemplate?: string;
+    /**
+     * template file path
+     */
     headerTemplate?: string;
+    /**
+     * template raw text
+     */
+    rawHeaderTemplate?: string;
     /**
      * style files path
      */
-    styles: string[];
+    styles?: string[];
+    /**
+     * style raw text
+     */
+    rawStyles?: string[];
     /**
      * script files path
      */
-    scripts: string[];
+    scripts?: string[];
+    /**
+     * script raw text
+     */
+    rawScripts?: string[];
     data: ReportData;
 }
 export declare class HtmlReport {
     private _parser;
     createPdf(options: ReportOptions): Promise<Buffer>;
-    _$loadReportTemplate({ data, template: absoluteTemplateUrl, }: {
-        data: any;
-        template: any;
-    }): Promise<string>;
+    _$loadReportTemplate(data: any, absoluteTemplateUrl: any, rawTemplate?: any): Promise<string>;
     _$loadReportStyles({ styles }: {
         styles: any;
     }): Promise<any>;

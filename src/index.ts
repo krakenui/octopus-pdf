@@ -16,7 +16,11 @@ export interface ReportOptions {
   /**
    * template file path
    */
-  template: string;
+  template?: string;
+  /**
+   * template raw text
+   */
+  rawTemplate?: string;
   /**
    * template file path
    */
@@ -24,15 +28,31 @@ export interface ReportOptions {
   /**
    * template file path
    */
+  rawFooterTemplate?: string;
+  /**
+   * template file path
+   */
   headerTemplate?: string;
+  /**
+   * template raw text
+   */
+  rawHeaderTemplate?: string;
   /**
    * style files path
    */
-  styles: string[];
+  styles?: string[];
+  /**
+   * style raw text
+   */
+  rawStyles?: string[];
   /**
    * script files path
    */
-  scripts: string[];
+  scripts?: string[];
+  /**
+   * script raw text
+   */
+  rawScripts?: string[];
 
   data: ReportData;
 }
@@ -41,46 +61,69 @@ export class HtmlReport {
   private _parser = new HtmlParser();
 
   async createPdf(options: ReportOptions): Promise<Buffer> {
-    const pageContent = await this._$loadReportTemplate(options);
-    let styles = options.styles;
-    let scripts = options.scripts;
+    let {
+      data,
+      template,
+      rawTemplate,
+      styles,
+      rawStyles,
+      scripts,
+      rawScripts,
+      headerTemplate,
+      rawHeaderTemplate,
+      footerTemplate,
+      rawFooterTemplate,
+    } = options;
+
+    let defaultScripts = [];
 
     if (options.useChartJs) {
-      styles = [path.resolve("./themes/chartjs/chart.css"), ...styles];
-      scripts = [path.resolve("./themes/chartjs/chart.js"), ...scripts];
+      styles = [
+        path.resolve(__dirname, "../themes/chartjs/chart.css"),
+        ...styles,
+      ];
+      defaultScripts = [path.resolve(__dirname, "../themes/chartjs/chart.js")];
     }
 
-    const pageStyles = await this._$loadReportStyles({ styles });
-    const pageScripts = await this._$loadReportScripts({ scripts });
+    //  load default resources
+    const pageDefaultScripts = await this._$loadReportScripts({
+      scripts: defaultScripts,
+    });
 
+    // load page resources
+    const pageContent = await this._$loadReportTemplate(
+      data,
+      template,
+      rawTemplate
+    );
+    const pageStyles = rawStyles || (await this._$loadReportStyles({ styles }));
+    const pageScripts =
+      rawScripts || (await this._$loadReportScripts({ scripts }));
     const reportData: ParserData = {
       title: options.title,
       styles: pageStyles,
       scripts: pageScripts,
+      defaultScripts: pageDefaultScripts,
       content: pageContent,
     };
 
-    const reportTemplatePath = path.resolve("./themes/default.ejs");
+    // load report theme
+    const reportTemplatePath = path.resolve(__dirname, "../themes/default.ejs");
     const reportTemplate = fs
       .readFileSync(reportTemplatePath)
       .toString("utf-8");
     const reportHtml = await this._parser.parse(reportTemplate, reportData);
 
-    let headerTemplate = null;
-    let footerTemplate = null;
-    if (options.headerTemplate != null) {
-      headerTemplate = await this._$loadReportTemplate({
-        data: options.data,
-        template: options.headerTemplate,
-      });
-    }
-
-    if (options.footerTemplate != null) {
-      footerTemplate = await this._$loadReportTemplate({
-        data: options.data,
-        template: options.footerTemplate,
-      });
-    }
+    headerTemplate = await this._$loadReportTemplate(
+      data,
+      headerTemplate,
+      rawHeaderTemplate
+    );
+    footerTemplate = await this._$loadReportTemplate(
+      data,
+      footerTemplate,
+      rawFooterTemplate
+    );
 
     const pdfOptions = options.pdfOptions || {};
     pdfOptions.headerTemplate = headerTemplate || "";
@@ -93,28 +136,33 @@ export class HtmlReport {
     return html2Pdf.createPdf(reportHtml);
   }
 
-  async _$loadReportTemplate({
+  async _$loadReportTemplate(
     data,
-    template: absoluteTemplateUrl,
-  }): Promise<string> {
-    const templateUrl = path.resolve(absoluteTemplateUrl);
-    if (!fs.existsSync(templateUrl)) {
-      throw new Error("Template url is invalid");
+    absoluteTemplateUrl,
+    rawTemplate = null
+  ): Promise<string> {
+    if (rawTemplate == null) {
+      const templateUrl = path.resolve(absoluteTemplateUrl);
+      if (!fs.existsSync(templateUrl)) {
+        throw new Error("Template url is invalid");
+      }
+
+      const template = fs.readFileSync(templateUrl);
+      if (template == null) {
+        throw new Error("Template is empty");
+      }
+
+      rawTemplate = template.toString("utf-8");
     }
 
-    const template = fs.readFileSync(templateUrl);
-    if (template == null) {
-      throw new Error("Template is empty");
-    }
-
-    const templateStr = template.toString("utf-8");
     const contentData: ParserData = {
       ...data,
       scripts: [],
+      defaultScripts: [],
       styles: [],
     };
 
-    return this._parser.parse(templateStr, contentData);
+    return this._parser.parse(rawTemplate, contentData);
   }
 
   async _$loadReportStyles({ styles }) {

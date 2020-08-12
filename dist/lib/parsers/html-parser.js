@@ -49,7 +49,7 @@ var HtmlParser = /** @class */ (function () {
     }
     HtmlParser.prototype.parse = function (template, data) {
         return __awaiter(this, void 0, void 0, function () {
-            var styles, scripts;
+            var styles, scripts, defaultScripts;
             return __generator(this, function (_a) {
                 // alway parse async
                 this._options.async = true;
@@ -59,8 +59,12 @@ var HtmlParser = /** @class */ (function () {
                 scripts = data.scripts.map(function (s) {
                     return "<script>" + s + "</script>";
                 });
+                defaultScripts = data.defaultScripts.map(function (s) {
+                    return "<script>" + s + "</script>";
+                });
                 data.styles = styles;
                 data.scripts = scripts;
+                data.defaultScripts = defaultScripts;
                 return [2 /*return*/, ejs_1.default.render(template, data, this._options)];
             });
         });
