@@ -76,18 +76,19 @@ export class HtmlReport {
     } = options;
 
     let defaultScripts = [];
+    let defaultStyles = [];
 
     if (options.useChartJs) {
-      styles = [
-        path.resolve(__dirname, "../themes/chartjs/chart.css"),
-        ...styles,
-      ];
+      defaultStyles = [path.resolve(__dirname, "../themes/chartjs/chart.css")];
       defaultScripts = [path.resolve(__dirname, "../themes/chartjs/chart.js")];
     }
 
     //  load default resources
     const pageDefaultScripts = await this._$loadReportScripts({
       scripts: defaultScripts,
+    });
+    const pageDefaultStyles = await this._$loadReportStyles({
+      styles: defaultStyles,
     });
 
     // load page resources
@@ -104,6 +105,7 @@ export class HtmlReport {
       styles: pageStyles,
       scripts: pageScripts,
       defaultScripts: pageDefaultScripts,
+      defaultStyles: pageDefaultStyles,
       content: pageContent,
     };
 
@@ -159,6 +161,7 @@ export class HtmlReport {
       ...data,
       scripts: [],
       defaultScripts: [],
+      defaultStyles: [],
       styles: [],
     };
 

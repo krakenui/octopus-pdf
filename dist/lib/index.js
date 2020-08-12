@@ -56,13 +56,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -80,16 +73,15 @@ var HtmlReport = /** @class */ (function () {
     }
     HtmlReport.prototype.createPdf = function (options) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, template, rawTemplate, styles, rawStyles, scripts, rawScripts, headerTemplate, rawHeaderTemplate, footerTemplate, rawFooterTemplate, defaultScripts, pageDefaultScripts, pageContent, pageStyles, _a, pageScripts, _b, reportData, reportTemplatePath, reportTemplate, reportHtml, pdfOptions, html2Pdf;
+            var data, template, rawTemplate, styles, rawStyles, scripts, rawScripts, headerTemplate, rawHeaderTemplate, footerTemplate, rawFooterTemplate, defaultScripts, defaultStyles, pageDefaultScripts, pageDefaultStyles, pageContent, pageStyles, _a, pageScripts, _b, reportData, reportTemplatePath, reportTemplate, reportHtml, pdfOptions, html2Pdf;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         data = options.data, template = options.template, rawTemplate = options.rawTemplate, styles = options.styles, rawStyles = options.rawStyles, scripts = options.scripts, rawScripts = options.rawScripts, headerTemplate = options.headerTemplate, rawHeaderTemplate = options.rawHeaderTemplate, footerTemplate = options.footerTemplate, rawFooterTemplate = options.rawFooterTemplate;
                         defaultScripts = [];
+                        defaultStyles = [];
                         if (options.useChartJs) {
-                            styles = __spreadArrays([
-                                path_1.default.resolve(__dirname, "../themes/chartjs/chart.css")
-                            ], styles);
+                            defaultStyles = [path_1.default.resolve(__dirname, "../themes/chartjs/chart.css")];
                             defaultScripts = [path_1.default.resolve(__dirname, "../themes/chartjs/chart.js")];
                         }
                         return [4 /*yield*/, this._$loadReportScripts({
@@ -97,30 +89,36 @@ var HtmlReport = /** @class */ (function () {
                             })];
                     case 1:
                         pageDefaultScripts = _c.sent();
-                        return [4 /*yield*/, this._$loadReportTemplate(data, template, rawTemplate)];
+                        return [4 /*yield*/, this._$loadReportStyles({
+                                styles: defaultStyles,
+                            })];
                     case 2:
+                        pageDefaultStyles = _c.sent();
+                        return [4 /*yield*/, this._$loadReportTemplate(data, template, rawTemplate)];
+                    case 3:
                         pageContent = _c.sent();
                         _a = rawStyles;
-                        if (_a) return [3 /*break*/, 4];
+                        if (_a) return [3 /*break*/, 5];
                         return [4 /*yield*/, this._$loadReportStyles({ styles: styles })];
-                    case 3:
-                        _a = (_c.sent());
-                        _c.label = 4;
                     case 4:
+                        _a = (_c.sent());
+                        _c.label = 5;
+                    case 5:
                         pageStyles = _a;
                         _b = rawScripts;
-                        if (_b) return [3 /*break*/, 6];
+                        if (_b) return [3 /*break*/, 7];
                         return [4 /*yield*/, this._$loadReportScripts({ scripts: scripts })];
-                    case 5:
-                        _b = (_c.sent());
-                        _c.label = 6;
                     case 6:
+                        _b = (_c.sent());
+                        _c.label = 7;
+                    case 7:
                         pageScripts = _b;
                         reportData = {
                             title: options.title,
                             styles: pageStyles,
                             scripts: pageScripts,
                             defaultScripts: pageDefaultScripts,
+                            defaultStyles: pageDefaultStyles,
                             content: pageContent,
                         };
                         reportTemplatePath = path_1.default.resolve(__dirname, "../themes/default.ejs");
@@ -128,13 +126,13 @@ var HtmlReport = /** @class */ (function () {
                             .readFileSync(reportTemplatePath)
                             .toString("utf-8");
                         return [4 /*yield*/, this._parser.parse(reportTemplate, reportData)];
-                    case 7:
+                    case 8:
                         reportHtml = _c.sent();
                         return [4 /*yield*/, this._$loadReportTemplate(data, headerTemplate, rawHeaderTemplate)];
-                    case 8:
+                    case 9:
                         headerTemplate = _c.sent();
                         return [4 /*yield*/, this._$loadReportTemplate(data, footerTemplate, rawFooterTemplate)];
-                    case 9:
+                    case 10:
                         footerTemplate = _c.sent();
                         pdfOptions = options.pdfOptions || {};
                         pdfOptions.headerTemplate = headerTemplate || "";
@@ -163,7 +161,7 @@ var HtmlReport = /** @class */ (function () {
                     }
                     rawTemplate = template.toString("utf-8");
                 }
-                contentData = __assign(__assign({}, data), { scripts: [], defaultScripts: [], styles: [] });
+                contentData = __assign(__assign({}, data), { scripts: [], defaultScripts: [], defaultStyles: [], styles: [] });
                 return [2 /*return*/, this._parser.parse(rawTemplate, contentData)];
             });
         });

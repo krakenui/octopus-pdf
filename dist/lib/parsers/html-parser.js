@@ -49,11 +49,14 @@ var HtmlParser = /** @class */ (function () {
     }
     HtmlParser.prototype.parse = function (template, data) {
         return __awaiter(this, void 0, void 0, function () {
-            var styles, scripts, defaultScripts;
+            var styles, defaultStyles, scripts, defaultScripts;
             return __generator(this, function (_a) {
                 // alway parse async
                 this._options.async = true;
                 styles = data.styles.map(function (s) {
+                    return "<style>" + s + "</style>";
+                });
+                defaultStyles = data.defaultStyles.map(function (s) {
                     return "<style>" + s + "</style>";
                 });
                 scripts = data.scripts.map(function (s) {
@@ -65,6 +68,7 @@ var HtmlParser = /** @class */ (function () {
                 data.styles = styles;
                 data.scripts = scripts;
                 data.defaultScripts = defaultScripts;
+                data.defaultStyles = defaultStyles;
                 return [2 /*return*/, ejs_1.default.render(template, data, this._options)];
             });
         });

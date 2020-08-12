@@ -17,6 +17,9 @@ export class HtmlParser {
     const styles = data.styles.map((s) => {
       return `<style>${s}</style>`;
     });
+    const defaultStyles = data.defaultStyles.map((s) => {
+      return `<style>${s}</style>`;
+    });
     const scripts = data.scripts.map((s) => {
       return `<script>${s}</script>`;
     });
@@ -27,6 +30,7 @@ export class HtmlParser {
     data.styles = styles;
     data.scripts = scripts;
     data.defaultScripts = defaultScripts;
+    data.defaultStyles = defaultStyles;
 
     return ejs.render(template, data, this._options);
   }
