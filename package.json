@@ -17,6 +17,10 @@
     "server",
     "report"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krakenui/octopus-pdf.git"
+  },
   "author": "Luong Phung<luonguit@gmail.com>",
   "license": "MIT",
   "dependencies": {
