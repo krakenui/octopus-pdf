@@ -1,20 +1,20 @@
-# nodejs-pdf-report
+# octopus-pdf
 
 Nodejs export pdf report from base html templates!
 
 [![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url]
 
-[npm-image]: http://img.shields.io/npm/v/nodejs-pdf-report.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/nodejs-pdf-report
-[download-image]: https://img.shields.io/npm/dm/nodejs-pdf-report.svg?style=flat-square
-[download-url]: https://npmjs.org/package/nodejs-pdf-report
+[npm-image]: http://img.shields.io/npm/v/octopus-pdf.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/octopus-pdf
+[download-image]: https://img.shields.io/npm/dm/octopus-pdf.svg?style=flat-square
+[download-url]: https://npmjs.org/package/octopus-pdf
 
 ## Install
 
-[![nodejs-pdf-report](https://nodei.co/npm/nodejs-pdf-report.png)](https://npmjs.org/package/nodejs-pdf-report)
+[![octopus-pdf](https://nodei.co/npm/octopus-pdf.png)](https://npmjs.org/package/octopus-pdf)
 
 ```
-npm install --save nodejs-pdf-report
+npm install --save octopus-pdf
 ```
 
 ## Supports
@@ -28,7 +28,7 @@ npm install --save nodejs-pdf-report
 - Import from package
 
 ```
-   import { HtmlReport, ReportOptions } from "nodejs-pdf-report";
+   import { HtmlReport, ReportOptions } from "octopus-pdf";
 ```
 
 - Define configures
@@ -114,4 +114,4 @@ const reportOptions: ReportOptions = {
 
 ## License
 
-nodejs-pdf-report is released under the MIT license.
+octopus-pdf is released under the MIT license.
